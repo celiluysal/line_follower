@@ -6,11 +6,23 @@
 #define BIN2 10
 #define BIN1 9
 
+#define Tactic 8
+#define Distance 12
+
+#define LeftEncoder 2
+#define RightEncoder 4
+
+#define Led 13
+
+#define TX 1
+#define RX 0
+
 #define max_speed 255
 #define min_speed -255
 #define base_speed 100
 
-#define tactic 8
+
+
 
 
 float Kp = 0.04;// 0.1//0.03
