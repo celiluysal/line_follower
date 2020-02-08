@@ -1,29 +1,7 @@
-#define PWMA 5
-#define AIN2 6
-#define AIN1 7
-
-#define PWMB 11
-#define BIN2 10
-#define BIN1 9
-
-#define Tactic 8
-#define Distance 12
-
-#define LeftEncoder 2
-#define RightEncoder 4
-
-#define Led 13
-
-#define TX 1
-#define RX 0
-
+#include "Pins.h"
 #define max_speed 255
 #define min_speed -255
 #define base_speed 100
-
-
-
-
 
 float Kp = 0.04;// 0.1//0.03
 float Kd = 0.1;//0.5 kalibrasyonda 0.3 iyi değer kalibre yoksa 0.5 iyi
@@ -165,13 +143,12 @@ void setup() {
   pinMode(BIN2,OUTPUT);
   pinMode(BIN1,OUTPUT);
 
-  pinMode(tactic, INPUT);
+  pinMode(Tactic, INPUT);
 
 }
 
 void loop() {
-
-  int tactic_state = digitalRead(tactic);
+  int tactic_state = digitalRead(Tactic);
   pozisyon = qtr.readLineBlack(sensorValues);
  
   son_pozisyon = pozisyon;
