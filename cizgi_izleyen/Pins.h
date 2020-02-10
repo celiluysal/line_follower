@@ -19,8 +19,4 @@
 
 
 
-class Pins{
-	public:
-		int a;
-		void Burak();
-};
+
