@@ -35,8 +35,8 @@ void motor(int left_speed, int right_speed){
     right_speed = max_speed;
   else if(right_speed < min_speed)
     right_speed = min_speed;
-    
-  
+
+
   if(left_speed < 0){
     digitalWrite(AIN2,0);
     digitalWrite(AIN1,1);
@@ -45,7 +45,7 @@ void motor(int left_speed, int right_speed){
     digitalWrite(AIN2,1);
     digitalWrite(AIN1,0);
   }
-  
+
   if(right_speed < 0){
     digitalWrite(BIN2,0);
     digitalWrite(BIN1,1);
@@ -66,11 +66,11 @@ void pid(){
   int  D = (hata - sonhata) * Kd;
   int PID = P + I + D;
   sonhata = hata;
-  
+
   if (PID < -255) {
       PID = -255;
   }
-  
+
   if (PID > 255) {
       PID = 255;
   }
@@ -83,8 +83,8 @@ void pid(){
     left_motor_duty = 255 ;}
   if (right_motor_duty > 255){
     left_motor_duty = left_motor_duty-(right_motor_duty - 255) ;
-    right_motor_duty = 255 ;}  
-    
+    right_motor_duty = 255 ;}
+
   if (left_motor_duty < 0)
     left_motor_duty = 0;
   if (right_motor_duty < 0)
@@ -93,7 +93,7 @@ void pid(){
 
 void calibration(){
   qtr.setTypeAnalog();
-  qtr.setSensorPins((const uint8_t[]){A7, A6, A5, A4, A3, A2, A1, A0}, SensorCount);
+  qtr.setSensorPins((const uint8_t[])QtrPins, SensorCount);
 
   delay(500);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -127,18 +127,18 @@ void calibration(){
   Serial.println();
   Serial.println();
   delay(1000);
-  
+
 }
 
 
 
 void setup() {
   calibration();
-  
+
   pinMode(PWMA,OUTPUT);
   pinMode(AIN2,OUTPUT);
   pinMode(AIN1,OUTPUT);
-  
+
   pinMode(PWMB,OUTPUT);
   pinMode(BIN2,OUTPUT);
   pinMode(BIN1,OUTPUT);
@@ -150,7 +150,7 @@ void setup() {
 void loop() {
   int tactic_state = digitalRead(Tactic);
   pozisyon = qtr.readLineBlack(sensorValues);
- 
+
   son_pozisyon = pozisyon;
 
   pid();
@@ -168,11 +168,11 @@ void loop() {
 
   Serial.print("  right: ");
   Serial.println(right_motor_duty);
-  
+
   if(tactic_state)
   motor(left_motor_duty, right_motor_duty);
   else
   motor(0,0);
-  
+
 
 }

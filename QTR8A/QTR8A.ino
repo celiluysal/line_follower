@@ -28,6 +28,8 @@
 
 QTRSensors qtr;
 
+#define QTRPins (const uint8_t[]){A7, A6, A5, A4, A3, A2, A1, A0}
+#define QtrPins {A7, A6, A5, A4, A3, A2, A1, A0}
 const uint8_t SensorCount = 8;
 uint16_t sensorValues[SensorCount];
 
@@ -35,7 +37,7 @@ void setup()
 {
   // configure the sensors
   qtr.setTypeAnalog();
-  qtr.setSensorPins((const uint8_t[]){A7, A6, A5, A4, A3, A2, A1, A0}, SensorCount);
+  qtr.setSensorPins(QTRPins, SensorCount);
 
   delay(500);
   pinMode(LED_BUILTIN, OUTPUT);
