@@ -119,6 +119,7 @@
     <ClInclude Include="Pid.h" />
     <ClInclude Include="Pins.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Values.h" />
     <ClInclude Include="__vm\.Line_Follower.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +136,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties config.Debug.customdebug_nano_atmega328old_debugger_type="universal" arduino.upload.port="COM5" />
+      <UserProperties config.Debug.customdebug_nano_atmega328old_debugger_type="universal" arduino.upload.port="COM4" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

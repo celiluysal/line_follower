@@ -21,22 +21,24 @@ void Motor::SetSpeed(short int leftSpeed, short int rightSpeed) {
         this->rightSpeed = rightSpeed;
 
 
-    if (this->leftSpeed < 0) {
+    if (this->leftSpeed >= 0) {
         digitalWrite(AIN2, LOW);
-        digitalWrite(AIN1, HIGH);
+        digitalWrite(AIN1, HIGH); 
     }
     else {
         digitalWrite(AIN2, HIGH);
         digitalWrite(AIN1, LOW);
+        this->leftSpeed = -this->leftSpeed;
     }
 
-    if (this->rightSpeed < 0) {
+    if (this->rightSpeed >= 0) {
         digitalWrite(BIN2, LOW);
-        digitalWrite(BIN1, HIGH);
+        digitalWrite(BIN1, HIGH);       
     }
     else {
         digitalWrite(BIN2, HIGH);
         digitalWrite(BIN1, LOW);
+        this->rightSpeed = -this->rightSpeed;
     }
 
     analogWrite(PWMA, this->leftSpeed);

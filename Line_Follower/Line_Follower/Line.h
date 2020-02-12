@@ -6,6 +6,7 @@ class Line
 {
 private:
 	QTRSensors qtr;
+	bool backGround;
 public:
 	short int sensorValues[QtrSensorCount];
 	short int position;
