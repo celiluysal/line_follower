@@ -48,21 +48,24 @@ void Line::CalibrateSensor() {
 }
 
 void Line::Read() {
-    position = qtr.readLineBlack((uint16_t*)sensorValues);
-    error = position;
+    position = qtr.readLineWhite((uint16_t*)sensorValues);
+    error = position-3500;
 
-    Serial.println();
-    for (uint8_t i = 0; i < QtrSensorCount; i++)
-    {
-        Serial.print(sensorValues[i]);
-        Serial.print('\t');
-    }
-    Serial.println();
+    
     /*
     DetectBackgroud fonksiyounua göre
     qtr.readLineBlack veya qtr.readLineWhite seç
     position, error ve sensorValues değerlerini ata
     */
+}
+
+void Line::Print() {
+    Serial.print("  ");
+    for (uint8_t i = 0; i < QtrSensorCount; i++)
+    {
+        Serial.print(sensorValues[i]);
+        Serial.print("  ");
+    }
 }
 
 void Line::DetectBackground() {

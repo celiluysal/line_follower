@@ -6,6 +6,8 @@
 #define BIN2 10
 #define BIN1 9
 
+#define DronePin 3
+
 #define QtrPins {A7, A6, A5, A4, A3, A2, A1, A0}
 #define QtrSensorCount 8
 

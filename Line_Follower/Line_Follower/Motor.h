@@ -1,13 +1,13 @@
 #include "Pins.h"
+#include "Values.h"
 #include "Arduino.h"
 
 class Motor
 {
 private:
-	short int maxSpeed, minSpeed;
 	short int leftSpeed, rightSpeed;
 public:
-	Motor(short int, short int);
+	Motor();
 	void SetSpeed(short int, short int);
 	void PrintSpeed();
 };

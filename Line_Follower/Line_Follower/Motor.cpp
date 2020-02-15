@@ -1,22 +1,26 @@
 #include "Motor.h"
 
-Motor::Motor(short int minSpeed, short int maxSpeed) {
-    this->maxSpeed = (maxSpeed < 255) ? maxSpeed : 255;
-    this->minSpeed = (minSpeed > -255) ? minSpeed : -255;
+Motor::Motor() {
+    pinMode(PWMA,OUTPUT);
+    pinMode(AIN2, OUTPUT);
+    pinMode(AIN1, OUTPUT);
+    pinMode(PWMB, OUTPUT);
+    pinMode(BIN2, OUTPUT);
+    pinMode(BIN1, OUTPUT);
 }
 
 void Motor::SetSpeed(short int leftSpeed, short int rightSpeed) {
-    if (leftSpeed > maxSpeed)
-        this->leftSpeed = maxSpeed;
-    else if (leftSpeed < minSpeed)
-        this->leftSpeed = minSpeed;
+    if (leftSpeed > max_speed)
+        this->leftSpeed = max_speed;
+    else if (leftSpeed < min_speed)
+        this->leftSpeed = min_speed;
     else
         this->leftSpeed = leftSpeed;
 
-    if (rightSpeed > maxSpeed)
-        this->rightSpeed = maxSpeed;
-    else if (rightSpeed < minSpeed)
-        this->rightSpeed = minSpeed;
+    if (rightSpeed > max_speed)
+        this->rightSpeed = max_speed;
+    else if (rightSpeed < min_speed)
+        this->rightSpeed = min_speed;
     else
         this->rightSpeed = rightSpeed;
 

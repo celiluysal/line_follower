@@ -20,19 +20,18 @@ void setup() {
 }
 
 void loop() {
-  /*motor(0,0);
+  motor(0,0);
   delay(1000);
   motor(20,20);
-  delay(1000);*/
-  
+  delay(1000);  
   motor(40,40);
- /* delay(1000);
+   delay(1000);
   motor(60,60);
   delay(1000);
   motor(40,40);
   delay(1000);
   motor(20,20);
-  delay(1000);*/
+  delay(1000);
 }
 
 void motor(int A, int B){

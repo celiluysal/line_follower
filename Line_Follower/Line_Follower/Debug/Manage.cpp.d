@@ -17,4 +17,7 @@ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug
  C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Line.h \
  C:\Users\celil\Documents\GitHub\cizgi_izleyen\Line_Follower\Libraries\qtr-sensors-arduino-master\4.0.0\qtr-sensors-arduino-master/QTRSensors.h \
  C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Pins.h \
- C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Values.h
+ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Values.h \
+ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Motor.h \
+ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\DroneMotor.h \
+ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Encoder.h

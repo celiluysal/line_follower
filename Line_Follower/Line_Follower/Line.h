@@ -16,6 +16,7 @@ public:
 	void CalibrateSensor();	
 	void Read();
 	void DetectBackground();
+	void Print();
 	QTRSensors GetQtr();
 
 };
