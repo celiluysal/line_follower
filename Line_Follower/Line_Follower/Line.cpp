@@ -44,19 +44,27 @@ void Line::CalibrateSensor() {
     }
     Serial.println();
     Serial.println();
-    delay(1000);
+    delay(2000);
+    position = qtr.readLineWhite((uint16_t*)sensorValues);
 }
 
 void Line::Read() {
-    position = qtr.readLineWhite((uint16_t*)sensorValues);
-    error = position-3500;
+    DetectBackground();
+
+    if (backGround) {
+        Serial.print(" black ");
+        position = qtr.readLineWhite((uint16_t*)sensorValues);
+    }
+    else {
+        Serial.print(" white ");
+        position = qtr.readLineBlack((uint16_t*)sensorValues);
+    }
+        
+
 
     
-    /*
-    DetectBackgroud fonksiyounua göre
-    qtr.readLineBlack veya qtr.readLineWhite seç
-    position, error ve sensorValues değerlerini ata
-    */
+    error = position-3500;    
+
 }
 
 void Line::Print() {
@@ -68,16 +76,20 @@ void Line::Print() {
     }
 }
 
+void Line::Sum() {
+    sum = 0;
+    for (uint8_t i = 0; i < QtrSensorCount; i++)
+    {
+        sum += sensorValues[i];
+    }
+}
+
 void Line::DetectBackground() {
-    /*
-    sensorValues[] veya positon değerlerini yorumla ve zemin rengini bul
-    */
-
-    /*if (sensorValues[7] < 300 && sensorValues[0] < 300) //siyah
-        backGround = 1; 
-
-    if (sensorValues[7] < 300 && sensorValues[0] < 300) //beyaz
-        backGround = 1;*/
+    Sum();
+    if ((sum > 800) && (sum < 2100))
+        backGround = 0;
+    else
+        backGround = 1;
 }
 
 QTRSensors Line::GetQtr() {

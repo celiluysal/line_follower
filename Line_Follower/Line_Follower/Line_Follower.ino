@@ -15,5 +15,5 @@ void setup() {
 
 
 void loop() {
-    manage->GenenalEvent();
+    manage->Control();
 }

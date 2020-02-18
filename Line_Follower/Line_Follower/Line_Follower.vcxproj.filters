@@ -48,6 +48,9 @@
     <ClInclude Include="Encoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mz80.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Line_Follower.rc">
@@ -71,6 +74,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Encoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mz80.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,12 +12,14 @@
 #define QtrSensorCount 8
 
 #define TacticPin 8
-#define DistancePin 12
+#define Mz80Pin 12
 
 #define LeftEncoderPin 2
 #define RightEncoderPin 4
 
 #define LedPin 13
+#define Led2Pin 0
+#define Led3Pin 1
 
 #define TX 1
 #define RX 0

@@ -4,7 +4,7 @@
 
 #define max_speed 255
 #define min_speed -255
-#define base_speed 150
+#define base_speed 100
 
 #define drone_max_speed 100
 #define drone_base_speed 50

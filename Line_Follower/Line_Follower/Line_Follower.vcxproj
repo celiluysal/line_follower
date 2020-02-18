@@ -118,6 +118,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="Manage.h" />
     <ClInclude Include="Motor.h" />
+    <ClInclude Include="Mz80.h" />
     <ClInclude Include="Pid.h" />
     <ClInclude Include="Pins.h" />
     <ClInclude Include="resource.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Manage.cpp" />
     <ClCompile Include="Motor.cpp" />
+    <ClCompile Include="Mz80.cpp" />
     <ClCompile Include="Pid.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

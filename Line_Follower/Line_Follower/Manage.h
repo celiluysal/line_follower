@@ -14,13 +14,23 @@ private:
 	DroneMotor* drone;
 	Encoder* encoder;
 
+	bool left1Done;
+
+	short int duty;
 	short int leftMotorDuty;
 	short int rightMotorDuty;
 
 	short int droneDuty;
 
+	short int lineCount;
+	void LineCount();
+
+	void TurnLeft();
+	void TurnRight();
+
 public:
 	Manage();
 	void GenenalEvent();
+	void Control();
 };
 
