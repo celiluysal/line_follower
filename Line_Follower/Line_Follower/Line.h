@@ -1,4 +1,4 @@
-#include <QTRSensors.h>
+#include "QTRSensors.h"
 #include "Arduino.h"
 #include "Pins.h"
 

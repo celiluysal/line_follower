@@ -122,6 +122,7 @@
     <ClInclude Include="Pid.h" />
     <ClInclude Include="Pins.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Tactic.h" />
     <ClInclude Include="Values.h" />
     <ClInclude Include="__vm\.Line_Follower.vsarduino.h" />
   </ItemGroup>
@@ -136,6 +137,7 @@
     <ClCompile Include="Motor.cpp" />
     <ClCompile Include="Mz80.cpp" />
     <ClCompile Include="Pid.cpp" />
+    <ClCompile Include="Tactic.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

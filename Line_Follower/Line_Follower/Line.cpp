@@ -52,22 +52,20 @@ void Line::Read() {
     DetectBackground();
 
     if (backGround) {
-        Serial.print(" black ");
+        //Serial.print(" black ");
         position = qtr.readLineWhite((uint16_t*)sensorValues);
     }
     else {
-        Serial.print(" white ");
+        //Serial.print(" white ");
         position = qtr.readLineBlack((uint16_t*)sensorValues);
-    }
-        
-
-
-    
+    }   
     error = position-3500;    
-
 }
 
 void Line::Print() {
+    Serial.print(" sum:");
+    Serial.print(sum);
+
     Serial.print("  ");
     for (uint8_t i = 0; i < QtrSensorCount; i++)
     {

@@ -6,6 +6,10 @@ Encoder::Encoder() {
 
     leftCount = 0;
     rightCount = 0;
+    leftDistance = 0;
+    rightDistance = 0;
+    averageDistance = 0;
+
     _left = 0;
     _right = 0;
 }
@@ -13,6 +17,7 @@ Encoder::Encoder() {
 void Encoder::Read() {
     if (digitalRead(LeftEncoderPin) == 0 && _left == 0) {
         leftCount++;
+        leftDistance += wheel_factor;
         _left = 1;
     }
     if (digitalRead(LeftEncoderPin) == 1) {
@@ -21,17 +26,19 @@ void Encoder::Read() {
 
     if (digitalRead(RightEncoderPin) == 0 && _right == 0) {
         rightCount++;
+        rightDistance += wheel_factor;
         _right = 1;
     }
     if (digitalRead(RightEncoderPin) == 1) {
         _right = 0;
     }
+    averageDistance = (leftDistance + rightDistance) / 2;
 }
 
 void Encoder::Print() {
     Read();
     Serial.print("  len: ");
-    Serial.print(leftCount);
+    Serial.print(leftDistance);
     Serial.print("  ren: ");
-    Serial.print(rightCount);
+    Serial.print(rightDistance);
 }

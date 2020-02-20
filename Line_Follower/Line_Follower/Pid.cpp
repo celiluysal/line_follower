@@ -1,12 +1,8 @@
 #include "Pid.h"
 
 Pid::Pid(Line *line) {
-	Serial.println("pid kur");
 	this->line = line;
 	lastError = 0;
-
-	Serial.print("pid line.position: ");
-	Serial.println(this->line->position);
 }
 
 short int Pid::Calculate() {

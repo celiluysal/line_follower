@@ -8,8 +8,14 @@ private:
 	bool _left;
 	bool _right;	
 public:
-	long leftCount;
-	long rightCount;
+	unsigned short int leftCount;
+	unsigned short int rightCount;
+
+	float leftDistance;
+	float rightDistance;
+
+	float averageDistance;
+
 	Encoder();
 	void Read();
 	void Print();

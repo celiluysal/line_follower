@@ -9,5 +9,6 @@ private:
 public:
 	Mz80();
 	bool Read();
+	void Print();
 };
 
