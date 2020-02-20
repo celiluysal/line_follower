@@ -19,21 +19,31 @@ Manage::Manage() {
 
 void Manage::Control() {
 
-
-	//encoder->Print();
 	encoder->Read();
-	//encoder->Print();
+	LineCount();
+	line->Read();
+
+	/*Serial.print(" count:");
+	Serial.println(lineCount);*/
+
+	if (lineCount == 1)
+	{
+		//Serial.print(" dongu");
+		lineCount = 0;
+		TurnLeft();
+		line->Read();
+		duty = pid->Calculate();
+		GenenalEvent();
+	}
+	else
+	{
+		line->Read();
+		duty = pid->Calculate();
+		GenenalEvent();
+	}
+
 	
 
-	/*LineCount();
-	Serial.print(" count:");
-	Serial.print(lineCount);*/
-
-
-	line->Read();
-	duty = pid->Calculate();
-	GenenalEvent();
-	//Serial.println();
 }
 
 
@@ -52,16 +62,14 @@ void Manage::GenenalEvent() {
 		motor->SetSpeed(0, 0);
 	}
 
-	
+	/*line->Print();
 
-	/*Serial.print(" position: ");
+	Serial.print(" position: ");
 	Serial.print(line->position);
 
 	Serial.print(" error: ");
 	Serial.print(line->error);
-
-		
-
+	
 	Serial.print(" left: ");
 	Serial.print(leftMotorDuty);
 
@@ -81,10 +89,19 @@ void Manage::GenenalEvent() {
 void Manage::TurnLeft() {
 	while (1)
 	{
-		Serial.println(" turn_left ");
 		
+		/*int a = (base_speed + (turn_left_error * Kp));
+		int b = (base_speed - (turn_left_error * Kp));
+		Serial.print(" a:");
+		Serial.print(a);
+		Serial.print(" b:");
+		Serial.println(b);*/
+
+		//Serial.println(" left");
+
+		motor->SetSpeed((base_speed + (turn_left_error * Kp)), (base_speed - (turn_left_error * Kp)));
 		line->Read();
-		if (line->sensorValues[2] < 500)//error kullan
+		if (line->error > -2000 && line->error < -1300)//error kullan
 			break;
 	}
 }
