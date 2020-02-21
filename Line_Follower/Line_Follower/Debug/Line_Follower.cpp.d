@@ -22,4 +22,6 @@ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug
  C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Motor.h \
  C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\DroneMotor.h \
  C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Encoder.h \
+ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Mz80.h \
+ C:\Users\celil\AppData\Local\Temp\VMBuilds\Line_Follower\nano_atmega328old\Debug\Tactic.h \
  c:\program\ files\ (x86)\microsoft\ visual\ studio\2019\community\common7\ide\extensions\p1hbfuhp.cmm\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h

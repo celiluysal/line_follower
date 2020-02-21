@@ -18,8 +18,11 @@ private:
 	Mz80* mz80;
 	Tactic* tactic;
 
-	bool left1Done;
+	bool objectPass;
 	bool _count;
+	bool _corner;
+	short int _chooseWay;
+	short int _tmpDistance;
 
 	short int duty;
 	short int leftMotorDuty;
@@ -30,8 +33,15 @@ private:
 	short int lineCount;
 	void LineCount();
 
-	void TurnLeft();
-	void TurnRight();
+	void changeLineLeft();
+	void changeLineRight();
+
+	void chooseWayLeft();
+	void chooseWayRight();
+
+
+	void cornerLeft();
+	void cornerRight();
 
 public:
 	Manage();
