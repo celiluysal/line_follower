@@ -18,34 +18,40 @@ private:
 	Mz80* mz80;
 	Tactic* tactic;
 
-	bool objectPass;
+	short int objectPass;
 	bool _count;
-	bool _corner;
+	bool _corner_left;
+	bool _corner_right;
+
 	short int _chooseWay;
 	short int _tmpDistance;
+	short int station;
 
 	short int duty;
 	short int leftMotorDuty;
 	short int rightMotorDuty;
-
 	short int droneDuty;
 
+	float pastAverageDistance;
+	float averageDistance;
 	short int lineCount;
+	bool parkCount;
+
 	void LineCount();
+	void ParkCount();
 
-	void changeLineLeft();
-	void changeLineRight();
+	void changeLineLeft(short int);
+	void changeLineRight(short int);
 
-	void chooseWayLeft();
-	void chooseWayRight();
+	void chooseWayLeft(short int);
+	void chooseWayRight(short int);
 
-
-	void cornerLeft();
-	void cornerRight();
+	void cornerLeft(short int);
+	void cornerRight(short int);
 
 public:
 	Manage();
-	void GenenalEvent();
+	void GenenalEvent(short int);
 	void Control();
 };
 

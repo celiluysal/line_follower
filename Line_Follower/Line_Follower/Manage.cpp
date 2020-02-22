@@ -11,50 +11,286 @@ Manage::Manage() {
 	mz80 = new Mz80();
 	tactic = new Tactic();
 
-	
+	station = 1;
+	averageDistance = 0;
+
 	lineCount = 0;
-	_corner = 0;
+	_corner_left = 0;
+	_corner_right = 0;
 	_count = 0;
 	_chooseWay = 0;
+
 	objectPass = 0;
-	_tmpDistance = 0;
+	_tmpDistance = 0;x""
 
 }
 
 void Manage::Control() {
 
 	encoder->Read();
-	line->Read();
-	LineCount();
 
-	//duty = pid->Calculate();
-	//GenenalEvent();
 
-	//Serial.print(" count:");
-	//Serial.print(lineCount);
-	
+	switch (station)
+	{
+	case 0: {//başlangınç
+		GenenalEvent(base_speed);
 
-	cornerRight();
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
 
-	line->Read();
-	duty = pid->Calculate();
-	GenenalEvent();
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed);
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 100)
+				break;
+		}
+		station = 12;
+		break;
+	}
+	case 1: {//engel ile sollama
+		if (!mz80->Read())
+		{
+			encoder->Read();
+			pastAverageDistance = encoder->averageDistance;
+			changeLineLeft(base_speed_s1);
+
+			while (1) //düz gitme miktarı
+			{
+				line->Read();
+				duty = pid->Calculate();
+				GenenalEvent(base_speed_s1);
+				encoder->Read();
+				if (encoder->averageDistance - pastAverageDistance > 35)
+					break;
+			}
+			changeLineRight(base_speed_s1);
+			GenenalEvent(base_speed_s1);
+			station = 2;
+		}
+		else
+		{
+			GenenalEvent(base_speed_s1);
+		}
+		break;
+	}
+	case 2: {//sol yol seçim (kısa yol)
+		line->Read();
+		LineCount();
+		if (lineCount == 2)
+		{
+			lineCount = 0;
+			chooseWayLeft(base_speed_s1);
+			GenenalEvent(base_speed_s1);
+			station = 3;
+		}
+		else
+		{
+			GenenalEvent(base_speed_s1);
+		}
+		
+		break;
+	}
+	case 3: {//kısa yol ile 90 öncesi	
+		//hızlı git algıla encoder say yavaşla
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed_s1);
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 30)
+				break;
+		}
+
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed);
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 420)
+				break;
+		}
+
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed_s2);
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 210)
+				break;
+		}
+		
+		station = 7;
+		//hata ve toplam ile son virajı bul
+		//encoder say sonraki station
+		break;
+	}
+	case 4: {//sağ 90
+
+		GenenalEvent(base_speed_s2);
+		cornerRight(base_speed_s2);
+		station = 5;
+		break;
+	}
+	case 5: {//iki 90 arası
+		//hızlandır encoder say yavaşlat
+		station = 6;
+		break;
+	}
+	case 6: {//sol 90
+		GenenalEvent(base_speed_s2);
+		cornerLeft(base_speed_s2);
+		station = 7;
+		break;
+	}
+	case 7: {//sağ yolu seç
+		GenenalEvent(base_speed);
+		if (!mz80->Read())//kapı
+			objectPass = 1;
+		else if (mz80->Read() && objectPass == 1) {
+			station = 8;
+			objectPass = 2;
+		}
+			
+		break;
+	}
+	case 8: {//hareketli engel
+			encoder->Read();
+			pastAverageDistance = encoder->averageDistance;
+
+			while (1) //düz gitme miktarı
+			{
+				GenenalEvent(base_speed_s1);
+				encoder->Read();
+				if (encoder->averageDistance - pastAverageDistance > 20)
+					break;
+			}
+			station = 9;
+		break;
+	}
+	case 9: {
+		line->Read();
+			if (!mz80->Read() && objectPass == 2)//engel var
+				objectPass = 4;
+			else if (line->sum > 7000 && objectPass == 4) {
+				//digitalWrite(LedPin, 1);
+				objectPass = 5;
+				changeLineLeft(base_speed_s1);
+				station = 10;
+			}
+			else
+			{
+				GenenalEvent(base_speed);
+			}
+		break;
+	}
+	case 10: {
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed);
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 950) {
+				break;
+			}
+		}
+		station = 12;
+		break;
+	}
+	case 11: {
+		/*line->Read();
+		LineCount();
+
+		if (lineCount == 1)
+		{
+			lineCount = 0;
+			encoder->Read();
+			pastAverageDistance = encoder->averageDistance;
+
+			while (1) //düz gitme miktarı
+			{
+				station = 12;
+				GenenalEvent(base_speed_s3);
+				encoder->Read();
+				if (encoder->averageDistance - pastAverageDistance > 240) {
+					break;
+				}
+			}
+
+		}
+		else
+		{
+			GenenalEvent(base_speed);
+		}*/
+
+		break;
+	}
+	case 12: {
+		line->Read();
+		ParkCount();
+		if (parkCount == 1)
+		{
+
+			motor->SetSpeed(0, 0);
+			delay(1000);
+
+			encoder->Read();
+			pastAverageDistance = encoder->averageDistance;
+
+			while (1) //düz gitme miktarı
+			{
+				motor->SetSpeed(30, 30);
+				encoder->Read();
+				if (encoder->averageDistance - pastAverageDistance > 25)
+					break;
+			}
+			station = 16;
+		}
+		else
+			GenenalEvent(base_speed_s3);
+		//encoder say yavaşla sonraki station
+	}
+	case 13: {
+
+		break;
+	}
+	case 14: {
+
+		break;
+	}
+	case 15: {
+
+		break;
+	}
+	case 16: {//park
+		motor->SetSpeed(0, 0);
+		break;
+		break;
+	}
+	default: {
+		motor->SetSpeed(0, 0);
+		//drone->SetSpeed(0);
+		break;
+	}
+	}
 }
 
-	
-	
-	
 
 
-
-
-
-
-void Manage::GenenalEvent() {
+void Manage::GenenalEvent(short int SPEED) {
+	line->Read();
+	duty = pid->Calculate();
 
 	if (mz80->Read() && tactic->Read()) {
-		leftMotorDuty = base_speed + duty;
-		rightMotorDuty = base_speed - duty;
+		leftMotorDuty = SPEED + duty;
+		rightMotorDuty = SPEED - duty;
 
 		droneDuty = (leftMotorDuty + rightMotorDuty) / 4;
 
@@ -90,29 +326,27 @@ void Manage::GenenalEvent() {
 	Serial.print(lineCount);*/
 
 
-	Serial.println();
+	//Serial.println();
 }
 
-void Manage::changeLineLeft() {
+void Manage::changeLineLeft(short int SPEED) {
 	while (1)
 	{
-		motor->SetSpeed((base_speed + (change_left_error * Kp)), (base_speed - (change_left_error * Kp)));
+		motor->SetSpeed((SPEED + (change_left_error * Kp)), (SPEED - (change_left_error * Kp)));
 		line->Read();
-		//if (line->error > -2000 && line->error < -1300)//error kullan
+
 		if (line->sensorValues[0] < 500)
 			break;
 	}
 }
 
-void Manage::changeLineRight() {
+void Manage::changeLineRight(short int SPEED) {
 	short int tmp = 0;
-	digitalWrite(LedPin, 1);
 
 	while (1)
 	{
-		motor->SetSpeed((base_speed + (change_right_error * Kp)), (base_speed - (change_right_error * Kp)));
+		motor->SetSpeed((SPEED + (change_right_error * Kp)), (SPEED - (change_right_error * Kp)));
 		line->Read();
-		//if (line->error > 1300 && line->error < 2000)//error kullan
 		
 		if (line->sensorValues[0] > 500 && tmp == 0)
 			tmp = 1;
@@ -125,75 +359,96 @@ void Manage::changeLineRight() {
 	}
 }
 
-void Manage::chooseWayLeft() {
-	digitalWrite(LedPin, 1);
-	//float tmp = encoder->rightDistance;
-	//float diff = 0;
+void Manage::chooseWayLeft(short int SPEED) {
+	bool tmp = 0;
 	while (1)
 	{
-		/*int a = (base_speed + (turn_right_error * Kp));
-		int b = (base_speed - (turn_right_error * Kp));
-		Serial.print(" a:");
-		Serial.print(a);
-		Serial.print(" b:");
-		Serial.println(b);*/
-		//encoder->Read();
-		//diff = encoder->rightDistance - tmp;
-		//Serial.print(" diff");
-		//Serial.print(diff);
-		//Serial.println(" choose-left");
-
 		line->Read();
 
+		if (line->sensorValues[1] < 500)
+			tmp = 1;
+
+		if (tmp == 1)
+		{
+			motor->SetSpeed((SPEED + (choose_left_error * Kp)), (SPEED - (choose_left_error * Kp)));
 
 
-		motor->SetSpeed((base_speed + (choose_left_error * Kp)), (base_speed - (choose_left_error * Kp)));
-		if (line->sensorValues[7] > 600 && _chooseWay == 0) {
-			_chooseWay = 1;
+			if (line->sensorValues[7] > 600 && _chooseWay == 0) {
+				_chooseWay = 1;
+			}
+			if (line->sensorValues[7] < 600 && _chooseWay == 1) {
+				_chooseWay = 2;
+			}
+			else if (line->sensorValues[7] > 700 && _chooseWay == 2) {
+				_chooseWay = 3;
+			}
+			else if (line->sensorValues[7] < 600 && _chooseWay == 3) {
+				_chooseWay = 0;
+				break; 
+			}
 		}
-		if (line->sensorValues[7] < 600 && _chooseWay == 1) {
-			_chooseWay = 2;
+		else
+		{
+			GenenalEvent(SPEED);
 		}
-		else if (line->sensorValues[7] > 700 && _chooseWay == 2) {
-			_chooseWay = 3;
-		}
-
-		else if (line->sensorValues[7] < 600 && _chooseWay == 3) {
-			digitalWrite(LedPin, 0);
-			_chooseWay = 0;
-			break;
-		}
-			
+				
 	}
 }
 
-void Manage::chooseWayRight() {
+void Manage::chooseWayRight(short int SPEED) {
 
 }
 
-void Manage::cornerLeft() {
-	
-}
-
-void Manage::cornerRight() {
+void Manage::cornerLeft(short int SPEED) {
 	if (line->sum < 4000) {
-		if (line->sensorValues[7] < 500 && line->sensorValues[6] < 500 && line->sensorValues[5] < 500 && line->sensorValues[5] < 500) {
-			_corner = 1;
+		if (line->sensorValues[0] < 500 && line->sensorValues[1] < 500 && line->sensorValues[2] < 500 && line->sensorValues[3] < 500) {
+			_corner_left = 1;
 		}
 	}
-	else if (line->sum > 7000 && _corner == 1)
+	else if (line->sum > 7000 && _corner_left == 1)
 	{
 		while (1)
 		{
-			leftMotorDuty = base_speed + corner_speed + duty;
-			rightMotorDuty = base_speed - corner_speed - duty;
+			//Serial.println(" left");
+			/*leftMotorDuty = SPEED + corner_speed + duty;
+			rightMotorDuty = SPEED - corner_speed - duty;
 
 			droneDuty = (leftMotorDuty + rightMotorDuty) / 2;
 
-			motor->SetSpeed(leftMotorDuty, rightMotorDuty);
+			motor->SetSpeed(leftMotorDuty, rightMotorDuty);*/
 			//drone->SetSpeed(droneDuty);
 
-			_corner = 0;
+			GenenalEvent(SPEED);
+			_corner_left = 0;
+			line->Read();
+			if (line->sensorValues[0] < 500)
+				break;
+		}
+	}
+}
+
+void Manage::cornerRight(short int SPEED) {
+	if (line->sum < 4000) {
+		if (line->sensorValues[7] < 500 && line->sensorValues[6] < 500 && line->sensorValues[5] < 500 && line->sensorValues[4] < 500) {
+			_corner_right = 1;
+		}
+	}
+	else if (line->sum > 7000 && _corner_right == 1)
+	{
+		while (1)
+		{
+			//Serial.println(" right");
+			//leftMotorDuty = SPEED + corner_speed + duty;
+			//rightMotorDuty = SPEED - corner_speed - duty;
+
+			//droneDuty = (leftMotorDuty + rightMotorDuty) / 2;
+
+			//motor->SetSpeed(leftMotorDuty, rightMotorDuty);
+			//drone->SetSpeed(droneDuty);
+
+			GenenalEvent(SPEED);
+
+			_corner_right = 0;
 			line->Read();
 			if (line->sensorValues[7] < 500)
 				break;
@@ -208,6 +463,21 @@ void Manage::LineCount() {
 	}
 	if (line->sum > 2000 && _count == 1 && tmp == 0) {
 		lineCount++;
+		_count = 0;
+		tmp = 1;
+	}
+	else {
+		tmp = 0;
+	}
+}
+
+void Manage::ParkCount() {
+	bool tmp = 0;
+	if (line->sum < 500) {
+		_count = 1;
+	}
+	if (line->sum > 7000 && _count == 1 && tmp == 0) {
+		parkCount = 1;
 		_count = 0;
 		tmp = 1;
 	}

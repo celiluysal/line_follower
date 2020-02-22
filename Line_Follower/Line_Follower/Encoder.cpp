@@ -4,8 +4,6 @@ Encoder::Encoder() {
 	pinMode(LeftEncoderPin, INPUT);
 	pinMode(RightEncoderPin, INPUT);
 
-    leftCount = 0;
-    rightCount = 0;
     leftDistance = 0;
     rightDistance = 0;
     averageDistance = 0;
@@ -16,7 +14,6 @@ Encoder::Encoder() {
 
 void Encoder::Read() {
     if (digitalRead(LeftEncoderPin) == 0 && _left == 0) {
-        leftCount++;
         leftDistance += wheel_factor;
         _left = 1;
     }
@@ -25,7 +22,6 @@ void Encoder::Read() {
     }
 
     if (digitalRead(RightEncoderPin) == 0 && _right == 0) {
-        rightCount++;
         rightDistance += wheel_factor;
         _right = 1;
     }

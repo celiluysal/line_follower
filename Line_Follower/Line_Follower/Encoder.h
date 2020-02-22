@@ -8,9 +8,6 @@ private:
 	bool _left;
 	bool _right;	
 public:
-	unsigned short int leftCount;
-	unsigned short int rightCount;
-
 	float leftDistance;
 	float rightDistance;
 
