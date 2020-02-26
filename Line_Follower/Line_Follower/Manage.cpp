@@ -32,20 +32,8 @@ void Manage::Control() {
 
 	switch (station)
 	{
-	case 0: {//başlangınç
-		GenenalEvent(base_speed);
-
-		encoder->Read();
-		pastAverageDistance = encoder->averageDistance;
-
-		while (1) //düz gitme miktarı
-		{
-			GenenalEvent(base_speed);
-			encoder->Read();
-			if (encoder->averageDistance - pastAverageDistance > 100)
-				break;
-		}
-		station = 12;
+	case 0: {
+		
 		break;
 	}
 	case 1: {//engel ile sollama
@@ -80,7 +68,7 @@ void Manage::Control() {
 		if (lineCount == 2)
 		{
 			lineCount = 0;
-			station = 18;
+			station = 4;
 		}
 		else
 		{
@@ -89,8 +77,34 @@ void Manage::Control() {
 		
 		break;
 	}
-	case 3: {//kısa yol ile 90 öncesi	
-		//hızlı git algıla encoder say yavaşla
+	case 3: {
+		
+
+		break;
+	}
+	case 4: {
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+		while (1) //düz gitme miktarı
+		{
+			digitalWrite(LedPin, 1);
+			GenenalEvent(base_speed_s1); //s1
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 15)
+				break;
+		}
+		digitalWrite(LedPin, 0);
+		station = 5;
+		break;
+	}
+	case 5: {
+		line->Read();
+		chooseWayLeft(base_speed_s1); //s1
+		GenenalEvent(base_speed_s1); //s1
+		station = 6;
+		break;
+	}
+	case 6: {
 		encoder->Read();
 		pastAverageDistance = encoder->averageDistance;
 
@@ -103,7 +117,7 @@ void Manage::Control() {
 		}
 
 		encoder->Read();
-		pastAverageDistance = encoder->averageDistance;	
+		pastAverageDistance = encoder->averageDistance;
 
 		while (1) //düz gitme miktarı
 		{
@@ -123,29 +137,10 @@ void Manage::Control() {
 			if (encoder->averageDistance - pastAverageDistance > 200) //210
 				break;
 		}
-		
-		station = 7;
 
-		break;
-	}
-	/*case 4: {//sağ 90
-
-		GenenalEvent(base_speed_s2);
-		cornerRight(base_speed_s2);
-		station = 5;
-		break;
-	}
-	case 5: {//iki 90 arası
-		//hızlandır encoder say yavaşlat
-		station = 6;
-		break;
-	}
-	case 6: {//sol 90
-		GenenalEvent(base_speed_s2);
-		cornerLeft(base_speed_s2);
 		station = 7;
 		break;
-	}*/
+	}
 	case 7: {//kapı
 		GenenalEvent(base_speed);
 		if (!mz80->Read())//kapı
@@ -279,7 +274,6 @@ void Manage::Control() {
 
 		}
 		station = 15;
-		//station = 16;
 
 		break;
 	}
@@ -305,39 +299,28 @@ void Manage::Control() {
 				if (encoder->averageDistance - pastAverageDistance > 25)
 					break;
 			}
-			station = 16;
+			station = 20;
 		}
 		else
 			GenenalEvent(base_speed_s3);
 		break;
 	}
-	case 16: {//park
+	case 16: {
+		
+		break;
+	}
+	case 18: {
+		
+		break;
+	}
+	case 19: {
+		
+		break;
+	}
+	case 20: {
 		motor->SetSpeed(0, 0);
 		break;
 	}
-	case 18: {//yol seç
-		encoder->Read();
-		pastAverageDistance = encoder->averageDistance;
-		while (1) //düz gitme miktarı
-		{
-			digitalWrite(LedPin, 1);
-			GenenalEvent(base_speed_s1); //s1
-			encoder->Read();
-			if (encoder->averageDistance - pastAverageDistance > 15)
-				break;
-		}
-		digitalWrite(LedPin, 0);
-		station = 19;
-		break;
-	}
-	case 19: {//yol seç
-		line->Read();
-		chooseWayLeft(base_speed_s1); //s1
-		GenenalEvent(base_speed_s1); //s1
-		station = 3;
-		break;
-	}
-
 	default: {
 		motor->SetSpeed(0, 0);
 		//drone->SetSpeed(0);
