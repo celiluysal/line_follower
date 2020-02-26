@@ -28,22 +28,22 @@ void Line::CalibrateSensor() {
     digitalWrite(LED_BUILTIN, LOW); // turn off Arduino's LED to indicate we are through with calibration
 
     // print the calibration minimum values measured when emitters were on
-    Serial.begin(9600);
+    //Serial.begin(9600);
     for (uint8_t i = 0; i < QtrSensorCount; i++)
     {
-        Serial.print(qtr.calibrationOn.minimum[i]);
-        Serial.print(' ');
+        //Serial.print(qtr.calibrationOn.minimum[i]);
+        //Serial.print(' ');
     }
-    Serial.println();
+    //Serial.println();
 
     // print the calibration maximum values measured when emitters were on
     for (uint8_t i = 0; i < QtrSensorCount; i++)
     {
-        Serial.print(qtr.calibrationOn.maximum[i]);
-        Serial.print(' ');
+        //Serial.print(qtr.calibrationOn.maximum[i]);
+        //Serial.print(' ');
     }
-    Serial.println();
-    Serial.println();
+    //Serial.println();
+    //Serial.println();
     delay(2000);
     position = qtr.readLineWhite((uint16_t*)sensorValues);
 }

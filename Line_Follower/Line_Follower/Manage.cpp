@@ -2,7 +2,6 @@
 
 
 Manage::Manage() {
-	Serial.println("manage kur");
 	line = new Line();
 	pid = new Pid(line);
 	motor = new Motor();
@@ -11,6 +10,7 @@ Manage::Manage() {
 	mz80 = new Mz80();
 	tactic = new Tactic();
 
+	/////////////////////////////////////////////////////////////////////////////////
 	station = 1;
 	averageDistance = 0;
 
@@ -21,7 +21,7 @@ Manage::Manage() {
 	_chooseWay = 0;
 
 	objectPass = 0;
-	_tmpDistance = 0;x""
+	_tmpDistance = 0;
 
 }
 
@@ -53,24 +53,24 @@ void Manage::Control() {
 		{
 			encoder->Read();
 			pastAverageDistance = encoder->averageDistance;
-			changeLineLeft(base_speed_s1);
+			changeLineLeft(base_speed_s1); //s1
 
 			while (1) //düz gitme miktarı
 			{
 				line->Read();
 				duty = pid->Calculate();
-				GenenalEvent(base_speed_s1);
+				GenenalEvent(base_speed_s1); //s1
 				encoder->Read();
 				if (encoder->averageDistance - pastAverageDistance > 35)
 					break;
 			}
-			changeLineRight(base_speed_s1);
-			GenenalEvent(base_speed_s1);
+			changeLineRight(base_speed_s1); 
+			GenenalEvent(base_speed_s2); //s2
 			station = 2;
 		}
 		else
 		{
-			GenenalEvent(base_speed_s1);
+			GenenalEvent(base_speed_s1); //s1
 		}
 		break;
 	}
@@ -80,13 +80,11 @@ void Manage::Control() {
 		if (lineCount == 2)
 		{
 			lineCount = 0;
-			chooseWayLeft(base_speed_s1);
-			GenenalEvent(base_speed_s1);
-			station = 3;
+			station = 18;
 		}
 		else
 		{
-			GenenalEvent(base_speed_s1);
+			GenenalEvent(base_speed_s1); //s1
 		}
 		
 		break;
@@ -98,14 +96,14 @@ void Manage::Control() {
 
 		while (1) //düz gitme miktarı
 		{
-			GenenalEvent(base_speed_s1);
+			GenenalEvent(base_speed_s1); //s1
 			encoder->Read();
 			if (encoder->averageDistance - pastAverageDistance > 30)
 				break;
 		}
 
 		encoder->Read();
-		pastAverageDistance = encoder->averageDistance;
+		pastAverageDistance = encoder->averageDistance;	
 
 		while (1) //düz gitme miktarı
 		{
@@ -122,16 +120,15 @@ void Manage::Control() {
 		{
 			GenenalEvent(base_speed_s2);
 			encoder->Read();
-			if (encoder->averageDistance - pastAverageDistance > 210)
+			if (encoder->averageDistance - pastAverageDistance > 200) //210
 				break;
 		}
 		
 		station = 7;
-		//hata ve toplam ile son virajı bul
-		//encoder say sonraki station
+
 		break;
 	}
-	case 4: {//sağ 90
+	/*case 4: {//sağ 90
 
 		GenenalEvent(base_speed_s2);
 		cornerRight(base_speed_s2);
@@ -148,8 +145,8 @@ void Manage::Control() {
 		cornerLeft(base_speed_s2);
 		station = 7;
 		break;
-	}
-	case 7: {//sağ yolu seç
+	}*/
+	case 7: {//kapı
 		GenenalEvent(base_speed);
 		if (!mz80->Read())//kapı
 			objectPass = 1;
@@ -191,53 +188,110 @@ void Manage::Control() {
 		break;
 	}
 	case 10: {
+		//tek say hız düşür
+		line->Read();
+		LineCount();
+		if (lineCount == 1)
+		{
+			//digitalWrite(LedPin, 1);
+			lineCount = 0;
+			GenenalEvent(base_speed);
+			station = 11;
+		}
+		else
+		{
+			GenenalEvent(base_speed); //s1
+		}
+		break;
+	}
+	case 11: {
+		//hız düşür
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed);
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 150)
+				break;
+		}
+		GenenalEvent(base_speed);
+		station = 12;
+		break;
+	}
+	case 12: {	
+		//sol yol seçs
+		line->Read();
+		LineCount();
+		if (lineCount == 2)
+		{
+			lineCount = 0;
+			chooseWayLeft(base_speed_s1); //s1
+			GenenalEvent(base_speed_s1); //s1
+
+			encoder->Read();
+			pastAverageDistance = encoder->averageDistance;
+
+			while (1) //düz gitme miktarı
+			{
+				GenenalEvent(base_speed_s1); //s1
+				encoder->Read();
+				if (encoder->averageDistance - pastAverageDistance > 15)
+					break;
+			}
+			encoder->Read();
+			pastAverageDistance = encoder->averageDistance;
+			while (1) //düz gitme miktarı
+			{
+				GenenalEvent(base_speed_s2); //s1
+				encoder->Read();
+				if (encoder->averageDistance - pastAverageDistance > 15)
+					break;
+			}
+
+			station = 13;
+		}
+		else {	
+			GenenalEvent(base_speed);
+		}	
+		break;
+	}
+	case 13: {
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+		while (1) //düz gitme miktarı
+		{
+			GenenalEvent(base_speed_f1); 
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 480)//530-500
+				break;
+
+		}
 		encoder->Read();
 		pastAverageDistance = encoder->averageDistance;
 		while (1) //düz gitme miktarı
 		{
 			GenenalEvent(base_speed);
 			encoder->Read();
-			if (encoder->averageDistance - pastAverageDistance > 950) {
+			if (encoder->averageDistance - pastAverageDistance > 60)//530-500
 				break;
-			}
-		}
-		station = 12;
-		break;
-	}
-	case 11: {
-		/*line->Read();
-		LineCount();
-
-		if (lineCount == 1)
-		{
-			lineCount = 0;
-			encoder->Read();
-			pastAverageDistance = encoder->averageDistance;
-
-			while (1) //düz gitme miktarı
-			{
-				station = 12;
-				GenenalEvent(base_speed_s3);
-				encoder->Read();
-				if (encoder->averageDistance - pastAverageDistance > 240) {
-					break;
-				}
-			}
 
 		}
-		else
-		{
-			GenenalEvent(base_speed);
-		}*/
+		station = 15;
+		//station = 16;
 
 		break;
 	}
-	case 12: {
+	case 14: {
+
+		break;
+	}
+	case 15: {
 		line->Read();
 		ParkCount();
 		if (parkCount == 1)
 		{
-
 			motor->SetSpeed(0, 0);
 			delay(1000);
 
@@ -255,25 +309,35 @@ void Manage::Control() {
 		}
 		else
 			GenenalEvent(base_speed_s3);
-		//encoder say yavaşla sonraki station
-	}
-	case 13: {
-
-		break;
-	}
-	case 14: {
-
-		break;
-	}
-	case 15: {
-
 		break;
 	}
 	case 16: {//park
 		motor->SetSpeed(0, 0);
 		break;
+	}
+	case 18: {//yol seç
+		encoder->Read();
+		pastAverageDistance = encoder->averageDistance;
+		while (1) //düz gitme miktarı
+		{
+			digitalWrite(LedPin, 1);
+			GenenalEvent(base_speed_s1); //s1
+			encoder->Read();
+			if (encoder->averageDistance - pastAverageDistance > 15)
+				break;
+		}
+		digitalWrite(LedPin, 0);
+		station = 19;
 		break;
 	}
+	case 19: {//yol seç
+		line->Read();
+		chooseWayLeft(base_speed_s1); //s1
+		GenenalEvent(base_speed_s1); //s1
+		station = 3;
+		break;
+	}
+
 	default: {
 		motor->SetSpeed(0, 0);
 		//drone->SetSpeed(0);

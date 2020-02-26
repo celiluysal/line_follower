@@ -1,16 +1,16 @@
-﻿#define Kp  0.033// 0.1//0.03
-#define Kd  0.065//0.5 kalibrasyonda 0.3 iyi değer kalibre yoksa 0.5 iyi
+﻿#define Kp  0.02// 0.1//0.03
+#define Kd  0.11//0.5 kalibrasyonda 0.3 iyi değer kalibre yoksa 0.5 iyi
 #define Ki  0.0001//0.0001
 
 /*motor settings*/
 ///////////////////////////////////////
 #define max_speed 255
 #define min_speed -255
-#define base_speed 160
+#define base_speed 130
 
 #define base_speed_s1 50 
 #define base_speed_s2 70 
-#define base_speed_s3 100 
+#define base_speed_s3 90 
 
 #define base_speed_f1 180 
 #define base_speed_f2 200 
