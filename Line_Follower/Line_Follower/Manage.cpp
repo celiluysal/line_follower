@@ -27,6 +27,7 @@ Manage::Manage() {
 
 void Manage::Control() {
 
+
 	//bursa
 
 	/*encoder->Read();
@@ -329,6 +330,7 @@ void Manage::Control() {
 		break;
 	}
 	}*/
+
 }
 
 
