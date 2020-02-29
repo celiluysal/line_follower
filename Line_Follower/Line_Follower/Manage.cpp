@@ -27,7 +27,7 @@ Manage::Manage() {
 
 void Manage::Control() {
 
-	encoder->Read();
+	/*encoder->Read();
 
 
 	switch (station)
@@ -326,7 +326,7 @@ void Manage::Control() {
 		//drone->SetSpeed(0);
 		break;
 	}
-	}
+	}*/
 }
 
 
