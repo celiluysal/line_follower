@@ -26,7 +26,7 @@ Manage::Manage() {
 }
 
 void Manage::Control() {
-
+	GenenalEvent(base_speed_s2);
 	
 }
 
