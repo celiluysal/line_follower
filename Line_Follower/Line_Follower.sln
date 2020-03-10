@@ -5,13 +5,7 @@ VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Line_Follower", "Line_Follower\Line_Follower.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qtr-sensors-arduino-master-4.0.0", "Libraries\qtr-sensors-arduino-master\4.0.0\qtr-sensors-arduino-master\qtr-sensors-arduino-master-4.0.0.vcxitems", "{7803AA8A-1624-4BA1-A8A8-3CA7C1607723}"
-EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Libraries\qtr-sensors-arduino-master\4.0.0\qtr-sensors-arduino-master\qtr-sensors-arduino-master-4.0.0.vcxitems*{7803aa8a-1624-4ba1-a8a8-3ca7c1607723}*SharedItemsImports = 9
-		Libraries\qtr-sensors-arduino-master\4.0.0\qtr-sensors-arduino-master\qtr-sensors-arduino-master-4.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
