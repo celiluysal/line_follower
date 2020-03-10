@@ -26,7 +26,13 @@ Manage::Manage() {
 }
 
 void Manage::Control() {
-	GenenalEvent(base_speed_s2);
+	
+	/*GenenalEvent(base_speed_s2,10);
+	MoveStraight(base_speed_s2, 60);
+	while (true)
+	{
+		motor->SetSpeed(0, 0);
+	}*/
 
 }
 
@@ -80,6 +86,36 @@ void Manage::GenenalEvent(short int SPEED, float DISTANCE)
 	while (1) //düz gitme miktarı
 	{
 		GenenalEvent(SPEED);
+		encoder->Read();
+		if (encoder->averageDistance - pastAverageDistance > DISTANCE)
+			break;
+	}
+}
+
+void Manage::MoveStraight(short int SPEED, float DISTANCE)
+{
+	digitalWrite(LedPin, 1);
+	short int diff = 0;
+	short int _rightDistance,_leftDistance;
+	encoder->Read();
+	_leftDistance = encoder->leftDistance;
+	_rightDistance = encoder->rightDistance;
+	pastAverageDistance = encoder->averageDistance;
+	while (1) //düz gitme miktarı
+	{
+		encoder->Read();
+		diff = ((encoder->leftDistance - _leftDistance) - (encoder->rightDistance - _rightDistance));
+
+		if (diff > 6 ||diff < -6)
+		{
+			motor->SetSpeed(SPEED - diff, SPEED + diff);
+		}
+		else
+		{
+			motor->SetSpeed(SPEED, SPEED);
+		}
+
+		
 		encoder->Read();
 		if (encoder->averageDistance - pastAverageDistance > DISTANCE)
 			break;

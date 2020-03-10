@@ -52,6 +52,8 @@ private:
 	void GenenalEvent(short int);
 	void GenenalEvent(short int,float);
 
+	void MoveStraight(short int,float);
+
 public:
 	Manage();
 	void Control();
