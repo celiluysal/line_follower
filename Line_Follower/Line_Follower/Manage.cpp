@@ -12,21 +12,25 @@ Manage::Manage() {
 
 	/////////////////////////////////////////////////////////////////////////////////
 	station = 1;
+
 	averageDistance = 0;
+	pastAverageDistance = 0;
 
 	lineCount = 0;
+	parkCount = 0;
+
 	_corner_left = 0;
 	_corner_right = 0;
 	_count = 0;
 	_chooseWay = 0;
-
-	objectPass = 0;
-	_tmpDistance = 0;
-
 }
 
 void Manage::Control() {
-	GenenalEvent(base_speed_s2);
+	GenenalEvent(base_speed_s2,20);
+	while (true)
+	{
+		motor->SetSpeed(0, 0);
+	}
 	
 }
 
@@ -40,15 +44,11 @@ void Manage::GenenalEvent(short int SPEED) {
 		leftMotorDuty = SPEED + duty;
 		rightMotorDuty = SPEED - duty;
 
-		droneDuty = (leftMotorDuty + rightMotorDuty) / 4;
-
 		motor->SetSpeed(leftMotorDuty, rightMotorDuty);
-		//drone->SetSpeed(droneDuty);
 	}
 	else
 	{
 		motor->SetSpeed(0, 0);
-		//drone->SetSpeed(0);
 	}
 
 	/*line->Print();
@@ -75,6 +75,19 @@ void Manage::GenenalEvent(short int SPEED) {
 
 
 	//Serial.println();
+}
+
+void Manage::GenenalEvent(short int SPEED, float DISTANCE)
+{
+	encoder->Read();
+	pastAverageDistance = encoder->averageDistance;
+	while (1) //düz gitme miktarı
+	{
+		GenenalEvent(SPEED);
+		encoder->Read();
+		if (encoder->averageDistance - pastAverageDistance > DISTANCE)
+			break;
+	}
 }
 
 void Manage::changeLineLeft(short int SPEED) {

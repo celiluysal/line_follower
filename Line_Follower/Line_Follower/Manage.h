@@ -35,7 +35,7 @@ private:
 	float pastAverageDistance;
 	float averageDistance;
 	short int lineCount;
-	bool parkCount;
+	short int parkCount;
 
 	void LineCount();
 	void ParkCount();
@@ -49,9 +49,11 @@ private:
 	void cornerLeft(short int);
 	void cornerRight(short int);
 
+	void GenenalEvent(short int);
+	void GenenalEvent(short int,float);
+
 public:
 	Manage();
-	void GenenalEvent(short int);
 	void Control();
 };
 
