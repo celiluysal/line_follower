@@ -26,12 +26,8 @@ Manage::Manage() {
 }
 
 void Manage::Control() {
-	GenenalEvent(base_speed_s2,20);
-	while (true)
-	{
-		motor->SetSpeed(0, 0);
-	}
-	
+	GenenalEvent(base_speed_s2);
+
 }
 
 
