@@ -6,7 +6,10 @@ class Encoder
 {
 private:
 	bool _left;
-	bool _right;	
+	bool _right;
+
+	bool firstLeft;
+	bool firstRight;
 public:
 	float leftDistance;
 	float rightDistance;
@@ -14,6 +17,7 @@ public:
 	float averageDistance;
 
 	Encoder();
+	void Set();
 	void Read();
 	void Print();
 };

@@ -23,17 +23,24 @@ Manage::Manage() {
 	_corner_right = 0;
 	_count = 0;
 	_chooseWay = 0;
+
+	encoder->Set();
 }
 
 void Manage::Control() {
 	
-	/*GenenalEvent(base_speed_s2,10);
-	MoveStraight(base_speed_s2, 60);
+	/*encoder->Print();
+	Serial.println();*/
+
+	//GenenalEvent(base_speed_s2);
+
+	GenenalEvent(base_speed_s2,30);
+	//MoveStraight(base_speed_s2, 60);
 	while (true)
 	{
 		motor->SetSpeed(0, 0);
-	}*/
-
+	}
+	
 }
 
 
@@ -53,6 +60,8 @@ void Manage::GenenalEvent(short int SPEED) {
 		motor->SetSpeed(0, 0);
 	}
 
+
+	//encoder->Print();
 	/*line->Print();
 
 	Serial.print(" position: ");
@@ -60,8 +69,7 @@ void Manage::GenenalEvent(short int SPEED) {
 
 	Serial.print(" error: ");
 	Serial.print(line->error);
-
-	//encoder->Print();
+	
 	
 	/*Serial.print(" left: ");
 	Serial.print(leftMotorDuty);
@@ -97,7 +105,10 @@ void Manage::MoveStraight(short int SPEED, float DISTANCE)
 	digitalWrite(LedPin, 1);
 	short int diff = 0;
 	short int _rightDistance,_leftDistance;
+
+	encoder->Set();
 	encoder->Read();
+
 	_leftDistance = encoder->leftDistance;
 	_rightDistance = encoder->rightDistance;
 	pastAverageDistance = encoder->averageDistance;
@@ -106,16 +117,8 @@ void Manage::MoveStraight(short int SPEED, float DISTANCE)
 		encoder->Read();
 		diff = ((encoder->leftDistance - _leftDistance) - (encoder->rightDistance - _rightDistance));
 
-		if (diff > 6 ||diff < -6)
-		{
-			motor->SetSpeed(SPEED - diff, SPEED + diff);
-		}
-		else
-		{
-			motor->SetSpeed(SPEED, SPEED);
-		}
+		motor->SetSpeed(SPEED - diff, SPEED + diff);
 
-		
 		encoder->Read();
 		if (encoder->averageDistance - pastAverageDistance > DISTANCE)
 			break;
