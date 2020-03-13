@@ -29,17 +29,34 @@ Manage::Manage() {
 
 void Manage::Control() {
 	
-	/*encoder->Print();
-	Serial.println();*/
 
-	//GenenalEvent(base_speed_s2);
 
-	GenenalEvent(base_speed_s2,30);
-	//MoveStraight(base_speed_s2, 60);
-	while (true)
+
+	switch (station)
 	{
-		motor->SetSpeed(0, 0);
+	case 0: {
+		break;
 	}
+	case 1: {
+		GenenalEvent(base_speed);
+		break;
+	}
+	case 2: {
+
+		break;
+	case 3: {
+		break;
+	}
+	}
+	default: {
+		motor->SetSpeed(0, 0);
+		break;
+	}
+	}
+
+	
+	
+
 	
 }
 
@@ -103,26 +120,59 @@ void Manage::GenenalEvent(short int SPEED, float DISTANCE)
 void Manage::MoveStraight(short int SPEED, float DISTANCE)
 {
 	digitalWrite(LedPin, 1);
-	short int diff = 0;
-	short int _rightDistance,_leftDistance;
+	float diff = 0, firstDiff;
+	float _rightDistance,_leftDistance;
 
-	encoder->Set();
+	//encoder->Set();
 	encoder->Read();
 
 	_leftDistance = encoder->leftDistance;
 	_rightDistance = encoder->rightDistance;
+	//firstDiff = ((encoder->leftDistance - _leftDistance) - (encoder->rightDistance - _rightDistance));
+
+	/*Serial.print(" -----------------first diff:");
+	Serial.println(firstDiff);*/
+
 	pastAverageDistance = encoder->averageDistance;
 	while (1) //düz gitme miktarı
 	{
+		//encoder->Print();
+		line->Read();
 		encoder->Read();
 		diff = ((encoder->leftDistance - _leftDistance) - (encoder->rightDistance - _rightDistance));
 
+		/*Serial.print(" left:");
+		Serial.print(encoder->leftDistance - _leftDistance);
+
+		Serial.print(" right:");
+		Serial.print(encoder->rightDistance - _rightDistance);
+
+		Serial.print(" 1. diff:");
+		Serial.print(diff);*/
+
+		/*if (firstDiff > 0)
+			diff -= firstDiff;
+		else
+			diff += firstDiff;*/
+
+		/*Serial.print(" 2. diff:");
+		Serial.print(diff);*/
+
+		diff *= 10;
+
+		/*Serial.print(" 2. diff:");
+		Serial.print(diff);
+
+		Serial.println();*/
+
 		motor->SetSpeed(SPEED - diff, SPEED + diff);
+
 
 		encoder->Read();
 		if (encoder->averageDistance - pastAverageDistance > DISTANCE)
 			break;
 	}
+	digitalWrite(LedPin, 0);
 }
 
 void Manage::changeLineLeft(short int SPEED) {

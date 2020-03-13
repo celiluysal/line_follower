@@ -25,7 +25,7 @@
 #define drone_min_speed 0
 ///////////////////////////////////////
 
-#define wheel_factor 1 //k=10.6 k/2=5.3
+#define wheel_factor 1.325 //k=10.6 k/2=5.3
 
 #define change_left_error -750
 #define change_right_error 750
