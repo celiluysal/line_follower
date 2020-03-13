@@ -53,6 +53,8 @@ private:
 	void GenenalEvent(short int,float);
 
 	void MoveStraight(short int,float);
+	void TurnRightAngle(short int, short int,bool);
+	void TurnLeftAngle(short int, short int);
 
 public:
 	Manage();

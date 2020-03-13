@@ -11,7 +11,7 @@ Manage::Manage() {
 	tactic = new Tactic();
 
 	/////////////////////////////////////////////////////////////////////////////////
-	station = 1;
+	station = 0;
 
 	averageDistance = 0;
 	pastAverageDistance = 0;
@@ -35,6 +35,8 @@ void Manage::Control() {
 	switch (station)
 	{
 	case 0: {
+		TurnRightAngle(50, 90, 1);
+		station = 5;
 		break;
 	}
 	case 1: {
@@ -44,9 +46,16 @@ void Manage::Control() {
 	case 2: {
 
 		break;
+	}
 	case 3: {
 		break;
 	}
+	case 4: {
+		break;
+	}
+	case 5: {
+		motor->SetSpeed(0, 0);
+		break;
 	}
 	default: {
 		motor->SetSpeed(0, 0);
@@ -173,6 +182,44 @@ void Manage::MoveStraight(short int SPEED, float DISTANCE)
 			break;
 	}
 	digitalWrite(LedPin, 0);
+}
+
+void Manage::TurnRightAngle(short int SPEED, short int ANGLE, bool a)
+{
+	float distance = 0.2 * ANGLE * wheel_factor;
+	float pastDistance = 0;
+
+	encoder->Read();
+	if (a) // 1 = çift motor
+	{
+		distance /= 2;
+		pastDistance = encoder->averageDistance;
+		while (1)
+		{
+			motor->SetSpeed(SPEED, SPEED * (-1));
+			encoder->Read();
+			if (encoder->averageDistance - pastDistance > distance)
+				break;
+		}
+	}
+	else // 0 = tek motor
+	{		
+		pastDistance = encoder->leftDistance;
+		while (1)
+		{
+			motor->SetSpeed(SPEED, 0);
+			encoder->Read();
+			if (encoder->leftDistance - pastDistance > distance)
+				break;
+		}
+	}
+
+	
+	
+}
+
+void Manage::TurnLeftAngle(short int, short int)
+{
 }
 
 void Manage::changeLineLeft(short int SPEED) {
